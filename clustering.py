@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys
+from time import time
 from pyspark.context import SparkContext
 from pyspark.sql.session import SparkSession
 from pyspark.sql.types import *
@@ -10,6 +11,7 @@ from pyspark.ml.clustering import KMeans
 if(len(sys.argv) > 5 ):
 	sc = SparkContext(appName="SparkClustering-emonto15-dperezg1")
 	spark = SparkSession(sc)
+	t0 = time()
 	files = sc.wholeTextFiles("hdfs://"+sys.argv[1])
 	schema =  StructType([StructField ("path" , StringType(), True) ,StructField("text" , StringType(), True)])
 	df = spark.createDataFrame(files,schema)
@@ -29,11 +31,12 @@ if(len(sys.argv) > 5 ):
 	
 	#ejecuta las trasformaciones mapeadas y guarda el resultado
 	results = model.transform(df)
+	t1 = time()
 	results.cache()
 	splited = split(results["path"], '.*/')
 	results = results.withColumn("documents",splited.getItem(1))
 	cluster = results.groupBy(['prediction']).agg(collect_list("documents").alias("cluster"))
-	cluster.toJSON().coalesce(1).saveAsTextFile(sys.argv[5])
+	cluster.coalesce(1).write.json(path=sys.argv[5], mode="overwrite")
 	print(cluster.select('prediction','cluster').toJSON().collect())
 	#Imprime los Resultados
 else:
