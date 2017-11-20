@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import sys
-from time import time
 from pyspark.context import SparkContext
 from pyspark.sql.session import SparkSession
 from pyspark.sql.types import *
@@ -13,7 +12,6 @@ if(len(sys.argv) > 5 ):
 	#Setup the sparkContext
 	sc = SparkContext(appName="SparkClustering-emonto15-dperezg1")
 	spark = SparkSession(sc)
-	t0 = time()
 	#Read from hdfs and save using a schema (path,text)
 	files = sc.wholeTextFiles("hdfs://"+sys.argv[1])
 	schema =  StructType([StructField ("path" , StringType(), True) ,StructField("text" , StringType(), True)])
@@ -37,7 +35,6 @@ if(len(sys.argv) > 5 ):
 	model = pipeline.fit(df)
 	#Execute each function to the dataset in order
 	results = model.transform(df)
-	t1 = time()
 	#Cache keeps all the data on memory to improve the performance
 	results.cache()
 	#Split the path to get just the filename
