@@ -55,22 +55,17 @@ There are two ways to run the code:
 1. Locally on the master of the cluster:
 
 ```
-$spark-submit --master local --deploy-mode client clustering.py /datasets/gutenberg-txt-es/1*.txt 8 2000 spanish
+$spark-submit --master local --deploy-mode client clustering.py /datasets/gutenberg-txt-es/1*.txt 8 2000 spanish /tmp/out
 ```
-This example's dataset is located at /datasets/gutenberg-txt-es/ and only will use all the documents that start with 1 and are text files, it use 8 clusters for the k-means, also limit the documents to 2000 different features, the language of the documents is spanish and the output file is output.txt
+This example's dataset is located at /datasets/gutenberg-txt-es/ and only will use all the documents that start with 1 and are text files, it use 8 clusters for the k-means, also limit the documents to 2000 different features, the language of the documents is spanish and the output folder is /temp/out
 
 2. Using all the Hadoop Cluster:
 ```
-$spark-submit --master yarn --deploy-mode cluster  --executor-memory 2G --num-executors 4 clustering.py /datasets/gutenberg/19*.txt 4 2000 english
+$spark-submit --master yarn --deploy-mode cluster  --executor-memory 2G --num-executors 4 clustering.py /datasets/gutenberg/19*.txt 4 2000 english /tmp/out
 ```
-This example's dataset is located at /datasets/gutenberg/ and only will use all the documents that start with 19 and are text files, it use 4 clusters for the k-means, also limit the documents to 2000 different features and the language of the documents is english
+This example's dataset is located at /datasets/gutenberg/ and only will use all the documents that start with 19 and are text files, it use 4 clusters for the k-means, also limit the documents to 2000 different features, then the language of the documents is english and at the end the output folder
 
 The master and deploy-mode flags are from the spark-submit executable, for further reading please read the [Full Documentation](https://spark.apache.org/docs/2.1.1/submitting-applications.html)
-
-## Authors
-
-* **Diego Alejandro Perez**
-* **Edwin Montoya Jaramillo**
 
 ### Testing on a server (DCA):
 The Department of computer science of EAFIT University has a big data cluster, based on a master and two slaves.
@@ -79,15 +74,27 @@ $ ssh <VPN Username>@192.168.10.75 #Cluster's Master
 >password:*********
 <VPN Username>@hdplabmaster:~/$git clone
 <VPN Username>@hdplabmaster:~/$cd bigDataK-means/
-<VPN Username>@hdplabmaster:~/$spark-submit --master yarn --deploy-mode cluster  --executor-memory 2G --num-executors 4 clustering.py /datasets/gutenberg/19*.txt 4 2000 english
+<VPN Username>@hdplabmaster:~/$spark-submit --master yarn --deploy-mode cluster  --executor-memory 2G --num-executors 4 clustering.py /datasets/gutenberg/19*.txt 4 2000 english /tmp/out
 <VPN Username>@hpcdis:~/$
 
 ```
+And the output should look like:
+```
+{"prediction":1,"cluster":["Abraham Lincoln___Lincoln Letters.txt","Abraham Lincoln___Lincoln's First Inaugural Address.txt","Abraham Lincoln___Lincoln's Gettysburg Address, given November 19, 1863.txt","Abraham Lincoln___Lincoln's Inaugurals, Addresses and Letters (Selections).txt","Abraham Lincoln___Lincoln's Second Inaugural Address.txt","Alfred Russel Wallace___Is Mars Habitable?.txt"]}
+{"prediction":3,"cluster":["Alfred Russel Wallace___Darwinism.txt"]}
+{"prediction":2,"cluster":["Alfred Russel Wallace___Island Life.txt"]}
+{"prediction":0,"cluster":["Alfred Russel Wallace___Contributions to the Theory of Natural Selection.txt","Alfred Russel Wallace___The Malay Archipelago, Volume 1.txt"]}
+
+```
+Where prediction means the cluster number and cluster is the actual documents that belongs to each cluster
+
+## Authors
+
+* **Diego Alejandro Perez**
+* **Edwin Montoya Jaramillo**
 ## Acknowledgments
 
 * Edwin Nelson Montoya Múnera
-* Juan David Pineda Cardenas
-* Juan Francisco Cardona Mc'Cormick
 * Daniel Hoyos Ospina
 * Daniela Serna Escobar
-* Daniel Rendon
+* Luis Miguel Mejía Suarez
