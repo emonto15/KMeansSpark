@@ -7,7 +7,7 @@ from pyspark.sql.functions import *
 from pyspark.ml import Pipeline
 from pyspark.ml.feature import HashingTF, IDF, Tokenizer, CountVectorizer, StopWordsRemover
 from pyspark.ml.clustering import KMeans
-if(len(sys.argv) > 4 ):
+if(len(sys.argv) > 5 ):
 	sc = SparkContext(appName="SparkClustering-emonto15-dperezg1")
 	spark = SparkSession(sc)
 	files = sc.wholeTextFiles("hdfs://"+sys.argv[1])
@@ -33,7 +33,7 @@ if(len(sys.argv) > 4 ):
 	splited = split(results["path"], '.*/')
 	results = results.withColumn("documents",splited.getItem(1))
 	cluster = results.groupBy(['prediction']).agg(collect_list("documents").alias("cluster"))
-	cluster.toJSON().coalesce(1).saveAsTextFile("hdfs:///tmp/emonto15")
+	cluster.toJSON().coalesce(1).saveAsTextFile(sys.argv[5])
 	print(cluster.select('prediction','cluster').toJSON().collect())
 	#Imprime los Resultados
 else:
