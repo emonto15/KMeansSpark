@@ -44,7 +44,7 @@ When installing hortonworks project, it covers other prerequisites such as HDFS,
 ### Usage
 
 The code receive four parameters to work this are:
-1. The HDFS path to the documents. (It require just the first slash for absolute path. The HDFS:// is already set)
+1. The HDFS path to the documents. (It require just the first slash for absolute path. The HDFS:// is already set). If yu just want some domuments and will use a wildcard (/19* or /*.txt) you need to add double-quote at the beginning and the end of the path.
 2. The number of documents clusters you want (For the K-Means).
 3. The maximum number of features (words) you want to limit the documents.
 4. The language of the documents (This is because we remove the stopwords of the language).The languages supported are: danish, dutch, english, finnish, french, german, hungarian, italian, norwegian, portuguese, russian, spanish, swedish, turkish.
@@ -55,7 +55,7 @@ There are two ways to run the code:
 1. Locally on the master of the cluster:
 
 ```
-$spark-submit --master local --deploy-mode client clustering.py /datasets/gutenberg-txt-es/1*.txt 8 2000 spanish /tmp/out
+$spark-submit --master local --deploy-mode client clustering.py "/datasets/gutenberg-txt-es/1*.txt" 8 2000 spanish /tmp/out
 ```
 This example's dataset is located at /datasets/gutenberg-txt-es/ and only will use all the documents that start with 1 and are text files, it use 8 clusters for the k-means, also limit the documents to 2000 different features, the language of the documents is spanish and the output folder is /temp/out
 
@@ -74,7 +74,7 @@ $ ssh <VPN Username>@192.168.10.75 #Cluster's Master
 >password:*********
 <VPN Username>@hdplabmaster:~/$git clone
 <VPN Username>@hdplabmaster:~/$cd bigDataK-means/
-<VPN Username>@hdplabmaster:~/$spark-submit --master yarn --deploy-mode cluster  --executor-memory 2G --num-executors 4 clustering.py /datasets/gutenberg/19*.txt 4 2000 english /tmp/out
+<VPN Username>@hdplabmaster:~/$spark-submit --master yarn --deploy-mode cluster  --executor-memory 2G --num-executors 4 clustering.py "/datasets/gutenberg/19*.txt" 4 2000 english /tmp/out
 <VPN Username>@hpcdis:~/$
 
 ```
