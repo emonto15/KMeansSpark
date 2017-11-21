@@ -88,6 +88,12 @@ And the output should look like:
 ```
 Where prediction means the cluster number and cluster is the actual documents that belongs to each cluster
 
+For monitoring the Process you can visit the URL:
+```
+http://192.168.10.75:8088/cluster/apps/
+```
+Here you can notice if the applicaction is RUNNING or ACEPTED.
+
 ## Authors
 
 * **Diego Alejandro Perez**
