@@ -67,6 +67,9 @@ This example's dataset is located at /datasets/gutenberg/ and only will use all 
 
 The master and deploy-mode flags are from the spark-submit executable, for further reading please read the [Full Documentation](https://spark.apache.org/docs/2.1.1/submitting-applications.html)
 
+### Dataset:
+The dataset we use for testing is available on this [repo](https://github.com/emonto15/KMeansSpark/blob/master/datasets/gutenberg-txt-es.zip). This dataset is from [Gutenberg](https://www.gutenberg.org/) repository which consist of thousands of free samples of ebooks on different formats. The subset we choose has 462 documents and all are in raw text format for easy use.  
+
 ### Testing on a server (DCA):
 The Department of computer science of EAFIT University has a big data cluster, based on a master and two slaves.
 ```
