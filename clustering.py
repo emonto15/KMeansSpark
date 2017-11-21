@@ -38,12 +38,12 @@ if(len(sys.argv) > 5 ):
 	#Cache keeps all the data on memory to improve the performance
 	results.cache()
 	#Split the path to get just the filename
-	#splited = split(results["path"], '.*/')
-	#results = results.withColumn("documents",splited.getItem(1))
+	splited = split(results["path"], '.*/')
+	results = results.withColumn("documents",splited.getItem(1))
 	#Group by predictions and creates an array of all the documents that match that prediction
-	#cluster = results.groupBy(['prediction']).agg(collect_list("documents").alias("cluster"))
+	cluster = results.groupBy(['prediction']).agg(collect_list("documents").alias("cluster"))
 	#Save the Dataframe to a folder and overwrite if the data exist.
-	#cluster.coalesce(1).write.json(path=sys.argv[5], mode="overwrite")
+	cluster.coalesce(1).write.json(path=sys.argv[5], mode="overwrite")
 	#print(cluster.select('prediction','cluster').toJSON().collect())
 else:
 	print("You are missing some arguments. Eg. clustering.py /datasets/gutenberg/19*.txt 4 2000 english /tmp/out")
